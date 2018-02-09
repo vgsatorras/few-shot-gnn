@@ -15,7 +15,18 @@ Download **images.zip** file and copy it inside ```mini_imagenet``` directory:
           └── mini_imagenet
              └── images.zip
 
-You can get the **images.zip** file by sending a mail to victor.few.shot@gmail.com with the subject: **mini_imagenet dataset**. These are the same data splits used by [Ravi and Larochelle](https://openreview.net/pdf?id=rJY0-Kcll)
+The **images.zip** file must contain the splits and images in the following format:
+
+    ── images.zip
+       ├── test.csv                
+       ├── train.csv 
+       ├── val.csv 
+       └── images
+          ├── n0153282900000006.jpg
+          ├── ...
+          └── n1313361300001299.jpg
+
+The splits *{test.csv, train.csv, val.csv}* can be downloaded from [Ravi and Larochelle - splits](https://github.com/twitter/meta-learning-lstm/tree/master/data/miniImagenet). For more information on how to obtain the images check the original source [Ravi and Larochelle - github](https://github.com/twitter/meta-learning-lstm)
 
 
 ### Training
