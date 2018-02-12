@@ -5,7 +5,7 @@ Implementation of [Few-Shot Learning with Graph Neural Networks](https://arxiv.o
 ## Mini-Imagenet
 
 ### Download the dataset
-Download **images.zip** file and copy it inside ```mini_imagenet``` directory:
+Create **images.zip** file and copy it inside ```mini_imagenet``` directory:
 
     
     .
