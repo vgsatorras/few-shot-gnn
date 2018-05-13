@@ -77,3 +77,14 @@ python3 main.py --exp_name $EXPNAME --dataset omniglot --test_N_way 20 --train_N
 EXPNAME=omniglot_N5_S1_U4
 python3 main.py --exp_name $EXPNAME --dataset omniglot --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5 --unlabeled_extra 4 --batch_size 100  --dec_lr=10000  --iterations 80000
 ```
+
+## Citation
+If you find this code useful you can cite us using the following bibTex:
+```
+@article{garcia2017few,
+  title={Few-Shot Learning with Graph Neural Networks},
+  author={Garcia, Victor and Bruna, Joan},
+  journal={arXiv preprint arXiv:1711.04043},
+  year={2017}
+}
+```
