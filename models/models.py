@@ -30,7 +30,7 @@ class EmbeddingOmniglot(nn.Module):
         self.bn4 = nn.BatchNorm2d(self.nef)
         # state size. (2*ndf) x 3 x 3
         self.fc_last = nn.Linear(3 * 3 * self.nef, self.emb_size, bias=False)
-        self.bn_last = nn.BatchNorm2d(self.emb_size)
+        self.bn_last = nn.BatchNorm1d(self.emb_size)
 
     def forward(self, inputs):
         e1 = F.max_pool2d(self.bn1(self.conv1(inputs)), 2)
