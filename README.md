@@ -36,13 +36,17 @@ The splits *{test.csv, train.csv, val.csv}* can be downloaded from [Ravi and Lar
 EXPNAME=minimagenet_N5_S1
 python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 1 --test_N_shots 1 --batch_size 100 --dec_lr=15000 --iterations 80000
 
-# 5-Way 5-shot | Few-shot 
+# 5-Way 5-shot | Few-shot (66.567%)
 EXPNAME=minimagenet_N5_S5
 python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5 --batch_size 40 --dec_lr=15000 --iterations 90000
 
-# 5-Way 5-shot 20%-labeled | Semi-supervised  
+# 5-Way 5-shot 20%-labeled | Semi-supervised  (51.890%)
 EXPNAME=minimagenet_N5_S5_U4
 python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 4 --batch_size 40 --dec_lr=15000 --iterations 100000
+
+# 5-Way 5-shot 40%-labeled | Semi-supervised  (59.347%)
+EXPNAME=minimagenet_N5_S5_U3
+python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 3 --batch_size 40 --dec_lr=15000 --iterations 100000
 ```
 
 
