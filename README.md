@@ -47,6 +47,14 @@ python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --tra
 # 5-Way 5-shot 40%-labeled | Semi-supervised  (59.347%)
 EXPNAME=minimagenet_N5_S5_U3
 python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 3 --batch_size 40 --dec_lr=15000 --iterations 100000
+
+# 5-Way 5-shot 20%-labeled | Active-Learning (58.980%)
+EXPNAME=minimagenet_N5_S5_U4_active
+python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 4 --batch_size 40 --dec_lr=15000 --iterations 100000 --metric_network gnn_iclr_active
+
+# 5-Way 5-shot 20%-labeled | Random (52.880%)
+EXPNAME=minimagenet_N5_S5_U4_active
+python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 4 --batch_size 40 --dec_lr=15000 --iterations 100000 --metric_network gnn_iclr_active --active_random 1
 ```
 
 
