@@ -32,29 +32,17 @@ The splits *{test.csv, train.csv, val.csv}* can be downloaded from [Ravi and Lar
 ### Training
 
 ```
-# 5-Way 1-shot | Few-shot (49.513%)
+# 5-Way 1-shot | Few-shot
 EXPNAME=minimagenet_N5_S1
 python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 1 --test_N_shots 1 --batch_size 100 --dec_lr=15000 --iterations 80000
 
-# 5-Way 5-shot | Few-shot (66.567%)
+# 5-Way 5-shot | Few-shot
 EXPNAME=minimagenet_N5_S5
 python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5 --batch_size 40 --dec_lr=15000 --iterations 90000
 
-# 5-Way 5-shot 20%-labeled | Semi-supervised  (51.890%)
+# 5-Way 5-shot 20%-labeled | Semi-supervised
 EXPNAME=minimagenet_N5_S5_U4
 python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 4 --batch_size 40 --dec_lr=15000 --iterations 100000
-
-# 5-Way 5-shot 40%-labeled | Semi-supervised  (59.347%)
-EXPNAME=minimagenet_N5_S5_U3
-python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 3 --batch_size 40 --dec_lr=15000 --iterations 100000
-
-# 5-Way 5-shot 20%-labeled | Active-Learning (58.980%)
-EXPNAME=minimagenet_N5_S5_U4_active
-python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 4 --batch_size 40 --dec_lr=15000 --iterations 100000 --metric_network gnn_iclr_active
-
-# 5-Way 5-shot 20%-labeled | Random (52.880%)
-EXPNAME=minimagenet_N5_S5_U4_active
-python3 main.py --exp_name $EXPNAME --dataset mini_imagenet --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5  --unlabeled_extra 4 --batch_size 40 --dec_lr=15000 --iterations 100000 --metric_network gnn_iclr_active --active_random 1
 ```
 
 
@@ -73,19 +61,19 @@ Download **images_background.zip** and **images_evaluation.zip** files from [bre
              
 ### Training
 ```
-# 5-Way 1-shot | Few-shot (99.277%)
+# 5-Way 1-shot | Few-shot
 EXPNAME=omniglot_N5_S1_v2
 python3 main.py --exp_name $EXPNAME --dataset omniglot --test_N_way 5 --train_N_way 5 --train_N_shots 1 --test_N_shots 1 --batch_size 300  --dec_lr=10000  --iterations 100000
 
-# 5-Way 5-shot | Few-shot (99.710%)
+# 5-Way 5-shot | Few-shot
 EXPNAME=omniglot_N5_S5
 python3 main.py --exp_name $EXPNAME --dataset omniglot --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5 --batch_size 100  --dec_lr=10000  --iterations 80000
 
-# 20-Way 1-shot | Few-shot (97.410%)
+# 20-Way 1-shot | Few-shot
 EXPNAME=omniglot_N20_S1
 python3 main.py --exp_name $EXPNAME --dataset omniglot --test_N_way 20 --train_N_way 20 --train_N_shots 1 --test_N_shots 1 --batch_size 100  --dec_lr=10000  --iterations 80000
 
-# 5-Way 5-shot 20%-labeled | Semi-supervised (99.617%) 
+# 5-Way 5-shot 20%-labeled | Semi-supervised
 EXPNAME=omniglot_N5_S5_U4
 python3 main.py --exp_name $EXPNAME --dataset omniglot --test_N_way 5 --train_N_way 5 --train_N_shots 5 --test_N_shots 5 --unlabeled_extra 4 --batch_size 100  --dec_lr=10000  --iterations 80000
 ```
