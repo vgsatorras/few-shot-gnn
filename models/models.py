@@ -140,7 +140,7 @@ class MetricNN(nn.Module):
 
     def gnn_iclr_active_forward(self, z, zi_s, labels_yi, oracles_yi, hidden_layers):
         # Creating WW matrix
-        zero_pad = Variable(torch.ones(labels_yi[0].size())*1.0/labels_yi[0].size(1))
+        zero_pad = Variable(torch.zeros(labels_yi[0].size()))
         if self.args.cuda:
             zero_pad = zero_pad.cuda()
 
