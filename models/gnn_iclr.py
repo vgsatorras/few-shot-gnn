@@ -236,9 +236,8 @@ class GNN_active(nn.Module):
             self.add_module('layer_w{}'.format(i), module_w)
             self.add_module('layer_l{}'.format(i), module_l)
 
-        self.conv_active_1 = nn.Conv1d(self.input_features + int(nf / 2) * 1, self.input_features + int(nf / 2) * 1, 1)
-        self.bn_active = nn.BatchNorm1d(self.input_features + int(nf / 2) * 1)
-        self.conv_active_2 = nn.Conv1d(self.input_features + int(nf / 2) * 1, 1, 1)
+        self.conv_active = nn.Conv1d(self.input_features + int(nf / 2) * 1, 1, 1, bias=False)
+        nn.init.uniform_(self.conv_active.weight.data)
 
         for i in range(int(self.num_layers/2), self.num_layers):
             if i == 0:
@@ -254,50 +253,49 @@ class GNN_active(nn.Module):
         self.layer_last = Gconv(self.input_features + int(self.nf / 2) * self.num_layers, args.train_N_way, 2, bn_bool=False)
 
     def active(self, x, oracles_yi, hidden_labels):
-        x_active = torch.transpose(x, 1, 2)
-        x_active = self.conv_active_1(x_active)
-        x_active = F.leaky_relu(self.bn_active(x_active))
-        x_active = self.conv_active_2(x_active)
-        x_active = torch.transpose(x_active, 1, 2)
+        '''
+        :param x: torch.Size([40, 26, 181])
+        :param oracles_yi: torch.Size([40, 26, 5])
+        :param hidden_labels: torch.Size([40, 26])
+        :return:
+        '''
 
-        x_active = x_active.squeeze(-1)
-        x_active = x_active - (1-hidden_labels)*1e8
-        x_active = F.softmax(x_active)
-        x_active = x_active*hidden_labels
+
+        x_active = torch.transpose(x, 1, 2)
+        x_to_classify = x_active[:, :, 0:1]
+
+        x_active = - ((x_active - x_to_classify) ** 2).detach()
+        x_active = self.conv_active(x_active)
+        x_active = torch.transpose(x_active, 1, 2)
+        x_active = x_active.squeeze(-1)  # torch.Size([40, 26])
 
         if self.args.active_random == 1:
-            #print('random active')
-            x_active.data.fill_(1./x_active.size(1))
-            decision = torch.multinomial(x_active)
-            x_active = x_active.detach()
+            x_active.data.fill_(1. / x_active.size(1))
+
+        # assigning lower prob to uncover the labels we already know
+        x_active = x_active - (1 - hidden_labels) * 1e8
+
+        if self.args.active_random == 1:
+            mapping = F.gumbel_softmax(x_active, hard=True).unsqueeze(-1)
+            mapping = mapping.detach()
         else:
             if self.training:
-                decision = torch.multinomial(x_active)
+                mapping = F.gumbel_softmax(x_active, hard=True).unsqueeze(-1)
             else:
-                _, decision = torch.max(x_active, 1)
-                decision = decision.unsqueeze(-1)
+                temperature = 1e5  # larger temperature at test to pick the most likely
+                mapping = F.gumbel_softmax(x_active * temperature, hard=True).unsqueeze(-1)
 
-        decision = decision.detach()
 
-        mapping = torch.FloatTensor(decision.size(0),x_active.size(1)).zero_()
-        mapping = Variable(mapping)
-        if self.args.cuda:
-            mapping = mapping.cuda()
-        mapping.scatter_(1, decision, 1)
+        label2add = oracles_yi * mapping
 
-        mapping_bp = (x_active*mapping).unsqueeze(-1)
-        mapping_bp = mapping_bp.expand_as(oracles_yi)
-
-        label2add = mapping_bp*oracles_yi #bsxNodesxN_way
+        # add ppadding
         padd = torch.zeros(x.size(0), x.size(1), x.size(2) - label2add.size(2))
         padd = Variable(padd).detach()
         if self.args.cuda:
             padd = padd.cuda()
         label2add = torch.cat([label2add, padd], 2)
-
-        x = x+label2add
+        x = x + label2add
         return x
-
 
     def forward(self, x, oracles_yi, hidden_labels):
         W_init = Variable(torch.eye(x.size(1)).unsqueeze(0).repeat(x.size(0), 1, 1).unsqueeze(3))

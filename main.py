@@ -167,7 +167,7 @@ def train():
         # Display
         ####################
         counter += 1
-        total_loss += loss_d_metric.data[0]
+        total_loss += loss_d_metric.item()
         if batch_idx % args.log_interval == 0:
                 display_str = 'Train Iter: {}'.format(batch_idx)
                 display_str += '\tLoss_d_metric: {:.6f}'.format(total_loss/counter)
