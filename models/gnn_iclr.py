@@ -168,7 +168,7 @@ class GNN_nl_omniglot(nn.Module):
             x_new = F.leaky_relu(self._modules['layer_l{}'.format(i)]([Wi, x])[1])
             x = torch.cat([x, x_new], 2)
 
-        Wl=self.w_comp_last(x, W_init)
+        Wl = self.w_comp_last(x, W_init)
         out = self.layer_last([Wl, x])[1]
 
         return out[:, 0, :]
